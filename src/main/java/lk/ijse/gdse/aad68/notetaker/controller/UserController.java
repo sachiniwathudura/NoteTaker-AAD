@@ -1,6 +1,7 @@
 package lk.ijse.gdse.aad68.notetaker.controller;
 
 import lk.ijse.gdse.aad68.notetaker.dto.UserDTO;
+import lk.ijse.gdse.aad68.notetaker.exception.UserNotFoundException;
 import lk.ijse.gdse.aad68.notetaker.service.UserService;
 import lk.ijse.gdse.aad68.notetaker.util.AppUtil;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +54,7 @@ public class UserController {
         return userService.getAllUsers();
     }
     @PatchMapping(value = "/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> updateUser(
+    public ResponseEntity<Void> updateUser(
 //        return userService.updateUser(id,userDTO)? new ResponseEntity<>(HttpStatus.NO_CONTENT):new ResponseEntity<>(HttpStatus.NOT_FOUND);
         @PathVariable("id") String id,
         @RequestPart("updatefirstName") String updatefirstName,
@@ -62,18 +63,24 @@ public class UserController {
         @RequestPart ("updatepassword") String updatepassword,
         @RequestPart ("updateprofilePic") String updateprofilePic) {
 
+        try {
             // Handle profile pic
             String base64ProfilePic = AppUtil.toBase64ProfilePic(updateprofilePic);
             // build the user object,multi part awa data tika dto ekt set krgnnwa
-           var updateUser = new UserDTO();
-           updateUser.setUserId(id);
+            var updateUser = new UserDTO();
+            updateUser.setUserId(id);
             updateUser.setFirstName(updatefirstName);
             updateUser.setLastName(updatelastName);
             updateUser.setEmail(updateemail);
             updateUser.setPassword(updatepassword);
             updateUser.setProfilePic(base64ProfilePic);
-            //send to the service layer
-        return userService.updateUser(updateUser)? new ResponseEntity<>(HttpStatus.NO_CONTENT): new ResponseEntity<>(HttpStatus.NOT_FOUND);
+             userService.updateUser(updateUser);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (UserNotFoundException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         }
 
 }
