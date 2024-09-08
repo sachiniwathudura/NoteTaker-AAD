@@ -28,12 +28,18 @@ public class UserServiceIMPL implements UserService{
 
     @Override
     public boolean updateUser(String userId, UserDTO userDTO) {
+
         return false;
     }
 
     @Override
     public boolean deleteUser(String userId) {
-        return false;
+        if (userDao.existsById(userId)){
+            userDao.deleteById(userId);
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override
