@@ -1,7 +1,7 @@
 package lk.ijse.gdse.aad68.notetaker.controller;
 
 import lk.ijse.gdse.aad68.notetaker.service.NoteService;
-import lk.ijse.gdse.aad68.notetaker.dto.NoteDTO;
+import lk.ijse.gdse.aad68.notetaker.dto.impl.NoteDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

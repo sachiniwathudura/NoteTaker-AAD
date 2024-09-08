@@ -1,4 +1,4 @@
-package lk.ijse.gdse.aad68.notetaker.dto;
+package lk.ijse.gdse.aad68.notetaker.dto.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
